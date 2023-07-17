@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Linear Regression App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+</head>
+<body>
+    <h1>Linear Regression App</h1>
+    <div class="form-container">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Upload CSV File:</label>
+            <input type="file" id="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        {% if message %}
+            <div id="message-container">
+                <p>{{ message }}</p>
+            </div>
+        {% endif %}
+        {% if error %}
+            <div id="error-container">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+        
+        {% if df_rows %}
+        <div id="dataframe-container" class="d-flex justify-content-center">
+            <h2>Uploaded Dataset (First 5 Rows):</h2>
+            <table class="center">
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                </tr>
+                {% for row in df_rows %}
+                <tr>
+                    <td>{{ row['X'] }}</td>
+                    <td>{{ row['Y'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+
+        <hr>
+        <label class="x_in" for="x-input">Enter X:</label>
+        <input type="number" id="x-input">
+        <button class="btn" onclick="predict()">Predict</button>
+        <!-- Replace the link with a form to submit the x value -->
+        <form action="/plot" method="post" id="plot-form">
+            <input type="hidden" id="plot-x-input" name="x" value="">
+            <!-- <button type="submit" class="btn">Show Plot</button> -->
+            
+        </form>
+    </div>
+    <div id="result-container">
+        <p>Y Predicted: <span id="result"></span></p>
+    </div>
+    <!-- {% if message %}
+        <div id="message-container">
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+    {% if error %}
+        <div id="error-container">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %} -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Linear Regression App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Linear Regression App</h1>
+    <div class="form-container">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Upload CSV File:</label>
+            <input type="file" id="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        {% if df_rows %}
+        <div id="dataframe-container">
+            <h2>Uploaded Dataset (First 5 Rows):</h2>
+            <table class="center">
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                </tr>
+                {% for row in df_rows %}
+                <tr>
+                    <td>{{ row['X'] }}</td>
+                    <td>{{ row['Y'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+        {% if message %}
+        <div id="message-container">
+            <p>{{ message }}</p>
+        </div>
+        {% endif %}
+        <hr>
+        <label for="x-input">Enter X:</label>
+        <input type="number" id="x-input">
+        <button class="btn" onclick="predict()">Predict</button>
+        <a href="#" onclick="plot()">Show Plot</a>
+    </div>
+    <div id="result-container">
+        <p>Y Predicted: <span id="result"></span></p>
+    </div>
+
+    {% if error %}
+        <div id="error-container">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %} -->
+    <!-- {% if df_rows %}
+        <div id="dataframe-container">
+            <h2>Uploaded Dataset (First 5 Rows):</h2>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                </tr>
+                {% for row in df_rows %}
+                <tr>
+                    <td>{{ row['X'] }}</td>
+                    <td>{{ row['Y'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %} -->
+    <!-- <a href="{{ url_for('plot', filename='plot_page.html') }}">Show Plot</a> -->
+    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Linear Regression App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Linear Regression App</h1>
+    <div class="form-container">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Upload CSV File:</label>
+            <input type="file" id="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        <hr>
+        <label for="x-input">Enter X:</label>
+        <input type="number" id="x-input">
+        <button onclick="predict()">Predict</button>
+        <a href="#" onclick="plot()">Show Plot</a>
+    </div>
+    <div id="result-container">
+        <p>Y Predicted: <span id="result"></span></p>
+    </div>
+    {% if message %}
+        <div id="message-container">
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+    {% if error %}
+        <div id="error-container">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+    {% if df_rows %}
+        <div id="dataframe-container">
+            <h2>Uploaded Dataset (First 5 Rows):</h2>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                </tr>
+                {% for x, y in df_rows %}
+                <tr>
+                    <td>{{ x }}</td>
+                    <td>{{ y }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Linear Regression App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Linear Regression App</h1>
+    <div class="form-container">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Upload CSV File:</label>
+            <input type="file" id="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        <hr>
+        <label for="x-input">Enter X:</label>
+        <input type="number" id="x-input">
+        <button onclick="predict()">Predict</button>
+        <a href="#" onclick="plot()">Show Plot</a>
+    </div>
+    <div id="result-container">
+        <p>Y Predicted: <span id="result"></span></p>
+    </div>
+    {% if message %}
+        <div id="message-container">
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+    {% if error %}
+        <div id="error-container">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+    {% if df_rows %}
+        <div id="dataframe-container">
+            <h2>Uploaded Dataset (First 5 Rows):</h2>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                </tr>
+                {% for row in df_rows %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> -->
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Linear Regression App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Linear Regression App</h1>
+    <div class="form-container">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label for="file">Upload CSV File:</label>
+            <input type="file" id="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+        <hr>
+        <label for="x-input">Enter X:</label>
+        <input type="number" id="x-input">
+        <button onclick="predict()">Predict</button>
+        <a href="#" onclick="plot()">Show Plot</a>
+    </div>
+    <div id="result-container">
+        <p>Y Predicted: <span id="result"></span></p>
+    </div>
+    {% if message %}
+        <div id="message-container">
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+    {% if error %}
+        <div id="error-container">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+    {% if df_rows %}
+        <div id="dataframe-container">
+            <h2>Uploaded Dataset (First 5 Rows):</h2>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                </tr>
+                {% for index, row in df_rows.values %}
+                <tr>
+                    <td>{{ row['X'] }}</td>
+                    <td>{{ row['Y'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> -->
